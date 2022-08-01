@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AbstractEntity } from "./AbstractEntity";
+import { Address } from "./Address";
 import { Department } from "./Department";
 
 @Entity("employee")
@@ -14,4 +15,8 @@ import { Department } from "./Department";
         public department: Department;
             @Column({ nullable: false })
             public departmentId: string;
+
+        @OneToMany(() => Address, (address) => address.employee)
+        @JoinColumn()
+            public address: Address[];
 }
