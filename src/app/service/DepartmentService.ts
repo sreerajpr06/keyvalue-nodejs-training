@@ -12,6 +12,16 @@ export class DepartmentService{
         const data = await this.departmentRepository.getAllDepartments();
         return data;
     }
+
+    public async getDepartmentById(departmentDetails: any) {
+        try{
+            const departmentId = departmentDetails.id;
+            const data = await this.departmentRepository.getDepartmentById(departmentId);
+            return data;
+        } catch (err) {
+            throw new HttpException(400, "Failed to get department")
+        }
+    }
     
     public async createDepartment(departmentDetails: any) {
         try {

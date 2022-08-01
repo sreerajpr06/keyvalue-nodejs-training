@@ -8,6 +8,14 @@ export class DepartmentRepository{
         return data;
     }
 
+    async getDepartmentById(departmentId: string) {
+        const departmentRepo = getConnection().getRepository(Department);
+        const data = await departmentRepo.findOne({
+            id: departmentId
+        })
+        return data;
+    }
+
     public async saveDepartmentDetails(departmentDetails: Department) {
         const departmentRepo = getConnection().getRepository(Department);
         return departmentRepo.save(departmentDetails);
