@@ -8,6 +8,14 @@ export class EmployeeRepository{
         return data;
     }
 
+    public async getEmployeeById(employeeId: string) {
+        const employeeRepo = getConnection().getRepository(Employee);
+        const data = await employeeRepo.findOne({
+            id: employeeId
+        })
+        return data;
+    }
+
     public async saveEmployeeDetails(employeeDetails: Employee) {
         const employeeRepo = getConnection().getRepository(Employee);
         return employeeRepo.save(employeeDetails);

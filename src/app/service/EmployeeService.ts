@@ -12,6 +12,12 @@ export class EmployeeService{
         const data = await this.employeeRepository.getAllEmployees();
         return data;
     }
+
+    async getEmployeeById(employeeIdDetails: any) {
+        const employeeId = employeeIdDetails.id;
+        const data = await this.employeeRepository.getEmployeeById(employeeId);
+        return data;
+    }
     
     public async createEmployee(employeeDetails: any) {
         try {
