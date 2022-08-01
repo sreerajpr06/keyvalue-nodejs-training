@@ -20,4 +20,17 @@ export class DepartmentRepository{
         const departmentRepo = getConnection().getRepository(Department);
         return departmentRepo.save(departmentDetails);
     }
+
+    public async updateDepartment(departmentDetails: Department) {
+        const departmentRepo = getConnection().getRepository(Department);
+        const data = await departmentRepo.update(
+            {
+                id: departmentDetails.id,
+                deletedAt: null
+            },
+            {
+                name: departmentDetails.name
+            }
+        )
+    }
 }

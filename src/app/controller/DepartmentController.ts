@@ -19,6 +19,10 @@ class DepartmentController extends AbstractController {
     this.router.get(
       `${this.path}/:id`,
       this.getDepartmentById
+    );
+    this.router.put(
+      `${this.path}/:id`,
+      this.updateDepartment
     )
     this.router.post(
       `${this.path}`,
@@ -64,6 +68,22 @@ class DepartmentController extends AbstractController {
       next(err);
     }
   }
+
+  private updateDepartment = async (
+    request: RequestWithUser,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const data = await this.departmentService.updateDepartment(request.params, request.body);
+      response.send(
+        this.fmt.formatResponse(data, Date.now() - request.startTime, "OK")
+      );
+    } catch (err) {
+      next(err);
+    }
+  }
+
 }
 
 export default DepartmentController;

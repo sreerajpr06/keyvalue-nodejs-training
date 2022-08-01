@@ -34,4 +34,17 @@ export class DepartmentService{
             throw new HttpException(400, "Failed to create department");
         }
     }
+
+    public async updateDepartment(departmentIdDetails: any, departmentDetails: any) {
+        try {
+            const updatedDepartment = plainToClass(Department, {
+                id: departmentIdDetails.id,
+                name: departmentDetails.name
+            })
+            const data = this.departmentRepository.updateDepartment(updatedDepartment);
+            return data;
+        } catch (err) {
+            throw new HttpException(400, "Failed to update department");
+        }
+    }
 }
