@@ -18,6 +18,10 @@ class EmployeeController extends AbstractController {
       // this.asyncRouteHandler(this.createEmployee)
       this.createEmployee
     );
+    this.router.delete(
+      `${this.path}/:id`,
+      this.deleteEmployee
+    )
   }
 
   private getEmployee = async (request: RequestWithUser, response: Response, next: NextFunction) => {
@@ -41,6 +45,21 @@ class EmployeeController extends AbstractController {
         this.fmt.formatResponse(data, Date.now() - request.startTime, "OK")
       );
     } catch (err) {
+      next(err);
+    }
+  }
+
+  private deleteEmployee = async (
+    request: RequestWithUser,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const data = await this.employeeService.deleteEmployee(request.params);
+      response.send(
+        this.fmt.formatResponse(data, Date.now() - request.startTime, "OK")
+      );
+    } catch(err) {
       next(err);
     }
   }

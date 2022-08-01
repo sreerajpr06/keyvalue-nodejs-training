@@ -28,4 +28,13 @@ export class EmployeeService{
             throw new HttpException(400, "Failed to create employee");
         }
     }
+
+    public async deleteEmployee(employeeDetails: any) {
+        try {
+            const data = await this.employeeRepository.softDeleteEmployee(employeeDetails.id);
+            return data;
+        } catch (err) {
+            throw new HttpException(400, "Failed to delete employee");
+        }
+    }
 }
