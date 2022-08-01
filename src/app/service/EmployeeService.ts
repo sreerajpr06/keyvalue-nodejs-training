@@ -37,4 +37,19 @@ export class EmployeeService{
             throw new HttpException(400, "Failed to delete employee");
         }
     }
+
+    public async updateEmployee(employeeDetails: any, employeeIdDetails: any) {
+        try {
+            const employeeId = employeeIdDetails.id;
+            const updatedEmployee = plainToClass(Employee, {
+                id: employeeId,
+                name: employeeDetails.name,
+                departmentId: employeeDetails.departmentId
+            })
+            const save = await this.employeeRepository.updateEmployee(updatedEmployee);
+            return save;
+        } catch (err) {
+            throw new HttpException(400, "Failed to update employee");
+        }
+    }
 }

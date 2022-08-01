@@ -20,4 +20,20 @@ export class EmployeeRepository{
         })
         return data;
     }
+
+    public async updateEmployee(employeeDetails: Employee) {
+        const employeeRepo = getConnection().getRepository(Employee);
+        const data = await employeeRepo.update(
+            {
+                id: employeeDetails.id,
+                deletedAt: null
+            },
+            {
+                name: employeeDetails.name ? employeeDetails.name : undefined,
+                departmentId: employeeDetails.departmentId ? employeeDetails.departmentId : undefined
+            }
+        )
+        const updatedData = await employeeRepo.findOne(employeeDetails.id)
+        return data;
+    }
 }
