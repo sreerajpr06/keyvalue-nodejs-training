@@ -47,4 +47,15 @@ export class DepartmentService{
             throw new HttpException(400, "Failed to update department");
         }
     }
+
+    public async deleteDepartment(departmentIdDetails: any) {
+        try {
+            const departmentId = departmentIdDetails.id;
+            const data = this.departmentRepository.deleteDepartment(departmentId);
+            return data;
+        } catch (err) {
+            throw new HttpException(400, "Failed to delete department");
+        }
+    }
+    
 }

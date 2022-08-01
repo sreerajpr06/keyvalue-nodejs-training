@@ -33,4 +33,12 @@ export class DepartmentRepository{
             }
         )
     }
+
+    public async deleteDepartment(departmentId: string) {
+        const departmentRepo = getConnection().getRepository(Department);
+        const data = await departmentRepo.softDelete({
+            id: departmentId
+        });
+        return data;
+    }
 }

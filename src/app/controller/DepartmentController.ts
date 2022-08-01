@@ -23,11 +23,15 @@ class DepartmentController extends AbstractController {
     this.router.put(
       `${this.path}/:id`,
       this.updateDepartment
-    )
+    );
     this.router.post(
       `${this.path}`,
       this.createDepartment
     );
+    this.router.delete(
+      `${this.path}/:id`,
+      this.deleteDepartment
+    )
   }
 
   private getDepartments = async (request: RequestWithUser, response: Response, next: NextFunction) => {
@@ -76,6 +80,21 @@ class DepartmentController extends AbstractController {
   ) => {
     try {
       const data = await this.departmentService.updateDepartment(request.params, request.body);
+      response.send(
+        this.fmt.formatResponse(data, Date.now() - request.startTime, "OK")
+      );
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  private deleteDepartment = async (
+    request: RequestWithUser,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try{
+      const data = await this.departmentService.deleteDepartment(request.params);
       response.send(
         this.fmt.formatResponse(data, Date.now() - request.startTime, "OK")
       );
