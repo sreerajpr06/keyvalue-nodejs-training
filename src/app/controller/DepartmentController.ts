@@ -4,6 +4,8 @@ import RequestWithUser from "../util/rest/request";
 import APP_CONSTANTS from "../constants";
 import { DepartmentService } from "../service/DepartmentService";
 import { Department } from "../entities/Department";
+import validationMiddleware from "../middleware/ValidationMiddleware";
+import { CreateDepartmentDto } from "../dto/CreateDepartment";
 
 class DepartmentController extends AbstractController {
   constructor(private departmentService: DepartmentService) {
@@ -26,6 +28,7 @@ class DepartmentController extends AbstractController {
     );
     this.router.post(
       `${this.path}`,
+      validationMiddleware(CreateDepartmentDto, APP_CONSTANTS.body),
       this.createDepartment
     );
     this.router.delete(
