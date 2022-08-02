@@ -17,6 +17,14 @@ export const ErrorCodes: { [key: string]: CustomError } = {
     VALIDATION_ERROR: {
         CODE: "VALIDATION_ERROR",
         MESSAGE: "Validation failed error",
+    },
+    EMPLOYEE_NOT_FOUND: {
+        CODE: "EMPLOYEE_NOT_FOUND",
+        MESSAGE: "Employee not found"
+    },
+    INCORRECT_USERNAME_OR_PASSWORD: {
+        CODE: "INCORRECT_USERNAME_OR_PASSWORD",
+        MESSAGE: "Incorrect username or password"
     }
 };
 
