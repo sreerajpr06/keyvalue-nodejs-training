@@ -6,6 +6,8 @@ import { DepartmentService } from "../service/DepartmentService";
 import { Department } from "../entities/Department";
 import validationMiddleware from "../middleware/ValidationMiddleware";
 import { CreateDepartmentDto } from "../dto/CreateDepartment";
+import { UuidDto } from "../dto/Uuid";
+import { UpdateDepartmentDto } from "../dto/UpdateDepartment";
 
 class DepartmentController extends AbstractController {
   constructor(private departmentService: DepartmentService) {
@@ -20,10 +22,13 @@ class DepartmentController extends AbstractController {
     );
     this.router.get(
       `${this.path}/:id`,
+      validationMiddleware(UuidDto, APP_CONSTANTS.params),
       this.getDepartmentById
     );
     this.router.put(
       `${this.path}/:id`,
+      validationMiddleware(UuidDto, APP_CONSTANTS.params),
+      validationMiddleware(UpdateDepartmentDto, APP_CONSTANTS.body),
       this.updateDepartment
     );
     this.router.post(
@@ -33,6 +38,7 @@ class DepartmentController extends AbstractController {
     );
     this.router.delete(
       `${this.path}/:id`,
+      validationMiddleware(UuidDto, APP_CONSTANTS.params),
       this.deleteDepartment
     )
   }
