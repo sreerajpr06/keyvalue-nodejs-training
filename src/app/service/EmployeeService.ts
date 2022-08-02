@@ -26,12 +26,13 @@ export class EmployeeService{
                 // username: employeeDetails.username,
                 // age: employeeDetails.age,
                 departmentId: employeeDetails.departmentId,
+                experience: employeeDetails.experience,
                 // isActive: true,
             });
             const save = await this.employeeRepository.saveEmployeeDetails(newEmployee);
             return save;
         } catch (err) {
-            throw new HttpException(400, "Failed to create employee");
+            throw err;
         }
     }
 
@@ -50,6 +51,7 @@ export class EmployeeService{
             const updatedEmployee = plainToClass(Employee, {
                 id: employeeId,
                 name: employeeDetails.name,
+                experience: employeeDetails.experience,
                 departmentId: employeeDetails.departmentId
             })
             const save = await this.employeeRepository.updateEmployee(updatedEmployee);

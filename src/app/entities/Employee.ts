@@ -9,6 +9,14 @@ import { Department } from "./Department";
         public id: string;
         @Column({ nullable: false })
         public name: string;
+        // @Column({ type: 'date' })
+        // public joinDate: string;
+        // @Column({ nullable: false })
+        // public role: string;
+        // @Column({ nullable: false })
+        // public status: string;
+        @Column({ nullable: false })
+        public experience: number;
 
         @ManyToOne(() => Department, { cascade: true })
         @JoinColumn()

@@ -17,8 +17,13 @@ export class EmployeeRepository{
     }
 
     public async saveEmployeeDetails(employeeDetails: Employee) {
-        const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.save(employeeDetails);
+        try {
+            const employeeRepo = getConnection().getRepository(Employee);
+            const data = employeeRepo.save(employeeDetails);
+            return data;
+        } catch(err) {
+            throw err;
+        }
     }
 
     public async softDeleteEmployee(employeeId: string) {
@@ -38,6 +43,7 @@ export class EmployeeRepository{
             },
             {
                 name: employeeDetails.name ? employeeDetails.name : undefined,
+                experience: employeeDetails.experience ? employeeDetails.experience : undefined,
                 departmentId: employeeDetails.departmentId ? employeeDetails.departmentId : undefined
             }
         )
