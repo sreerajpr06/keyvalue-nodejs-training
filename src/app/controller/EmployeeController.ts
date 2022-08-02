@@ -21,6 +21,7 @@ class EmployeeController extends AbstractController {
     );
     this.router.get(
       `${this.path}/:id`, 
+      validationMiddleware(UuidDto, APP_CONSTANTS.params),
       this.getEmployeeById
     )
     this.router.post(
@@ -31,6 +32,7 @@ class EmployeeController extends AbstractController {
     );
     this.router.delete(
       `${this.path}/:id`,
+      validationMiddleware(UuidDto, APP_CONSTANTS.params),
       this.deleteEmployee
     );
     this.router.put(
