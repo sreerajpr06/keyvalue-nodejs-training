@@ -13,6 +13,39 @@ export class EmployeeService{
     constructor(private employeeRepository: EmployeeRepository) {
 
     }
+    
+    public employeeLogin = async (
+            name: string,
+            password: string
+        ) => {
+            const employeeDetails = await this.employeeRepository.getEmployeeByName(name);
+            if (!employeeDetails) {
+                throw new UserNotAuthorizedException();
+            }
+            const validPassword = await bcrypt.compare(password, employeeDetails.password);
+            if (validPassword) {
+                let payload = {
+                    "id": employeeDetails.id,
+                    "name": employeeDetails.name,
+                    "role": employeeDetails.role
+                };
+                const token = this.generateAuthTokens(payload);
+
+                return {
+                    idToken: token,
+                    employeeDetails,
+                };
+            } else {
+                throw new IncorrectUsernameOrPasswordException();
+            }
+        };
+
+    private generateAuthTokens = (payload: any) => {
+        return jsonwebtoken.sign(payload, process.env.JWT_TOKEN_SECRET, {
+          expiresIn: process.env.ID_TOKEN_VALIDITY,
+        });
+    };  
+
 
     async getAllEmployees(){
         const data = await this.employeeRepository.getAllEmployees();
