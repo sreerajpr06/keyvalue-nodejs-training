@@ -16,14 +16,18 @@ export class EmployeeRepository {
         return data;
     }
 
+    public async getEmployeeByName(username: string) {
+        const employeeRepo = getConnection().getRepository(Employee);
+        const employeeDetail = await employeeRepo.findOne({
+            where: { name: username },
+        });
+        return employeeDetail;
+    }
+
     public async saveEmployeeDetails(employeeDetails: Employee) {
-        try {
-            const employeeRepo = getConnection().getRepository(Employee);
-            const data = employeeRepo.save(employeeDetails);
-            return data;
-        } catch (err) {
-            throw err;
-        }
+        const employeeRepo = getConnection().getRepository(Employee);
+        const data = employeeRepo.save(employeeDetails);
+        return data;
     }
 
     public async softDeleteEmployee(employeeId: string) {

@@ -7,6 +7,7 @@ import { CreateEmployeeDto } from "../dto/CreateEmployee";
 import validationMiddleware from "../middleware/ValidationMiddleware";
 import { UuidDto } from "../dto/Uuid";
 import { UpdateEmployeeDto } from "../dto/UpdateEmployee";
+import authorize from "../middleware/Authorize";
 
 class EmployeeController extends AbstractController {
   constructor(private employeeService: EmployeeService) {
@@ -15,8 +16,13 @@ class EmployeeController extends AbstractController {
   }
 
   protected initializeRoutes() {
+    this.router.post(
+      `${this.path}/login`,
+      this.login
+    );
     this.router.get(
-      `${this.path}`, 
+      `${this.path}`,
+      authorize(['admin']),
       this.getEmployee
     );
     this.router.get(
@@ -42,6 +48,25 @@ class EmployeeController extends AbstractController {
       this.updateEmployee
     )
   }
+
+  private login = async (
+    request: RequestWithUser,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const loginData = request.body;
+      const loginDetail = await this.employeeService.employeeLogin(
+        loginData.name.toLowerCase(),
+        loginData.password
+      );
+      response.send(
+        this.fmt.formatResponse(loginDetail, Date.now() - request.startTime, "OK")
+      );
+    } catch (err) {
+      next(err)
+    }
+  };
 
   private getEmployee = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
@@ -105,7 +130,7 @@ class EmployeeController extends AbstractController {
     next: NextFunction
   ) => {
     try {
-      const data = await this.employeeService.updateEmployee(request.body, request.params);
+      const data = await this.employeeService.updateEmployee(request.body, request.params.id);
       response.send(
         this.fmt.formatResponse(data, Date.now() - request.startTime, "OK")
       );
