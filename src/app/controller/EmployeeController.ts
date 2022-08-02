@@ -1,7 +1,7 @@
 import { AbstractController } from "../util/rest/controller";
 import { NextFunction, Response } from "express";
 import RequestWithUser from "../util/rest/request";
-import APP_CONSTANTS from "../constants";
+import APP_CONSTANTS, { USER_ROLES } from "../constants";
 import { EmployeeService } from "../service/EmployeeService";
 import { CreateEmployeeDto } from "../dto/CreateEmployee";
 import validationMiddleware from "../middleware/ValidationMiddleware";
@@ -22,27 +22,31 @@ class EmployeeController extends AbstractController {
     );
     this.router.get(
       `${this.path}`,
-      authorize(['admin']),
+      authorize([USER_ROLES.admin, USER_ROLES.manager, USER_ROLES.developer, USER_ROLES.engineer]),
       this.getEmployee
     );
     this.router.get(
       `${this.path}/:id`, 
+      authorize([USER_ROLES.admin, USER_ROLES.manager]),
       validationMiddleware(UuidDto, APP_CONSTANTS.params),
       this.getEmployeeById
     )
     this.router.post(
       `${this.path}`,
+      authorize([USER_ROLES.admin]),
       validationMiddleware(CreateEmployeeDto, APP_CONSTANTS.body),
       // this.asyncRouteHandler(this.createEmployee)
       this.createEmployee
     );
     this.router.delete(
       `${this.path}/:id`,
+      authorize([USER_ROLES.admin]),
       validationMiddleware(UuidDto, APP_CONSTANTS.params),
       this.deleteEmployee
     );
     this.router.put(
       `${this.path}/:id`,
+      authorize([USER_ROLES.admin]),
       validationMiddleware(UuidDto, APP_CONSTANTS.params),
       validationMiddleware(UpdateEmployeeDto, APP_CONSTANTS.body),
       this.updateEmployee

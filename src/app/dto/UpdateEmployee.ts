@@ -4,6 +4,12 @@ export class UpdateEmployeeDto {
     @IsString()
     public name: string;
 
+    @IsString()
+    public role: string;
+
+    @IsString()
+    public password: string;
+
     @IsNumber()
     public experience: number;
 

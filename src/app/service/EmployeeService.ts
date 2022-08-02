@@ -94,6 +94,8 @@ export class EmployeeService{
             const updatedEmployee = plainToClass(Employee, {
                 id: employeeId,
                 name: employeeDetails.name,
+                role: employeeDetails.role,
+                password: employeeDetails.password ? await bcrypt.hash(employeeDetails.password, 10) : '',
                 experience: employeeDetails.experience,
                 departmentId: employeeDetails.departmentId
             })
