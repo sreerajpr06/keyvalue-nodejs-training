@@ -41,9 +41,15 @@ export class EmployeeRepository {
 
     public async softDeleteEmployee(employeeId: string) {
         const employeeRepo = getConnection().getRepository(Employee);
-        const data = employeeRepo.softDelete({
-            id: employeeId
+        const entity = await employeeRepo.findOne({
+            where: {
+                id: employeeId
+            },
+            relations: [
+                'address'
+            ]
         })
+        const data = await employeeRepo.softRemove(entity);
         return data;
     }
 
