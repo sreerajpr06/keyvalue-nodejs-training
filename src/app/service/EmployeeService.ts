@@ -77,10 +77,13 @@ export class EmployeeService{
             })
             const newEmployee = plainToClass(Employee, {
                 name: employeeDetails.name,
-                role: employeeDetails.role,
+                username: employeeDetails.username,
                 password: employeeDetails.password ? await bcrypt.hash(employeeDetails.password, 10) : '',
-                departmentId: employeeDetails.departmentId,
+                joinDate: employeeDetails.joinDate,
                 experience: employeeDetails.experience,
+                status: employeeDetails.status,
+                role: employeeDetails.role,
+                departmentId: employeeDetails.departmentId,
                 address: newAddress
             });
             const save = await this.employeeRepository.saveEmployeeDetails(newEmployee);
@@ -114,9 +117,12 @@ export class EmployeeService{
             const updatedEmployee = plainToClass(Employee, {
                 id: employeeId,
                 name: employeeDetails.name,
-                role: employeeDetails.role,
+                username: employeeDetails.username,
                 password: employeeDetails.password ? await bcrypt.hash(employeeDetails.password, 10) : '',
+                joinDate: employeeDetails.joinDate,
                 experience: employeeDetails.experience,
+                status: employeeDetails.status,
+                role: employeeDetails.role,
                 departmentId: employeeDetails.departmentId,
                 address: updatedEmpAddress
             })

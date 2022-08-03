@@ -8,13 +8,22 @@ export class UpdateEmployeeDto {
     public name: string;
 
     @IsString()
-    public role: string;
+    public username: string;
 
     @IsString()
     public password: string;
 
+    @IsString()
+    public joinDate: string;
+
     @IsNumber()
     public experience: number;
+
+    @IsString()
+    public status: string;
+
+    @IsString()
+    public role: string;
 
     @IsUUID()
     public departmentId: string;

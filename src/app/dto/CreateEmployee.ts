@@ -8,18 +8,27 @@ export class CreateEmployeeDto {
     public name: string;
 
     @IsString()
+    public username: string;
+
+    @IsString()
     public password: string;
 
     @IsString()
-    public role: string;
+    public joinDate: string;
 
     @IsNumber()
     public experience: number;
+
+    @IsString()
+    public status: string;
+
+    @IsString()
+    public role: string;
 
     @IsUUID()
     public departmentId: string;
 
     @ValidateNested({ each: true })
-        @Type(() => CreateAddressDto)
+    @Type(() => CreateAddressDto)
         public address: Address
 }
