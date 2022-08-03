@@ -98,13 +98,24 @@ export class EmployeeService{
 
     public async updateEmployee(employeeDetails: any, employeeId: any) {
         try {
+            // const existingEmployee = this.employeeRepository.getEmployeeById(employeeId);
+            const updatedEmpAddress = {
+                id: employeeDetails.addressId,
+                line1: employeeDetails.address.line1,
+                line2: employeeDetails.address.line2,
+                city: employeeDetails.address.city,
+                state: employeeDetails.address.state,
+                country: employeeDetails.address.country,
+                pin: employeeDetails.address.pin,
+            }
             const updatedEmployee = plainToClass(Employee, {
                 id: employeeId,
                 name: employeeDetails.name,
                 role: employeeDetails.role,
                 password: employeeDetails.password ? await bcrypt.hash(employeeDetails.password, 10) : '',
                 experience: employeeDetails.experience,
-                departmentId: employeeDetails.departmentId
+                departmentId: employeeDetails.departmentId,
+                address: updatedEmpAddress
             })
             const save = await this.employeeRepository.updateEmployee(updatedEmployee);
             return save;

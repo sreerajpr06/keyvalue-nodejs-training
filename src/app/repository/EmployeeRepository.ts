@@ -55,12 +55,13 @@ export class EmployeeRepository {
 
     public async updateEmployee(employeeDetails: Employee) {
         const employeeRepo = getConnection().getRepository(Employee);
-        const data = await employeeRepo.update(
-            {
-                id: employeeDetails.id,
-                deletedAt: null
-            }, employeeDetails
-        )
+        // const data = await employeeRepo.update(
+        //     {
+        //         id: employeeDetails.id,
+        //         deletedAt: null
+        //     }, employeeDetails
+        // )
+        const data = await employeeRepo.save(employeeDetails)
         const updatedData = await employeeRepo.findOne(employeeDetails.id)
         return data;
     }
