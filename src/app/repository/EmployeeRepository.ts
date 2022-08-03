@@ -4,14 +4,23 @@ import { Employee } from "../entities/Employee";
 export class EmployeeRepository {
     async getAllEmployees() {
         const employeeRepo = getConnection().getRepository(Employee);
-        const data = await employeeRepo.find();
+        const data = await employeeRepo.find({
+            relations: [
+                'address'
+            ]
+        });
         return data;
     }
 
     public async getEmployeeById(employeeId: string) {
         const employeeRepo = getConnection().getRepository(Employee);
         const data = await employeeRepo.findOne({
-            id: employeeId
+            where: {
+                id: employeeId
+            },
+            relations: [
+                'address'
+            ]
         })
         return data;
     }
