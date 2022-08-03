@@ -88,7 +88,7 @@ class EmployeeController extends AbstractController {
     next: NextFunction
   ) => {
     try {
-      const data: any = await this.employeeService.getEmployeeById(request.params);
+      const data: any = await this.employeeService.getEmployeeById(request.params.id);
       response.status(200);
       response.send(
         this.fmt.formatResponse(data, Date.now() - request.startTime, "OK")
@@ -119,7 +119,7 @@ class EmployeeController extends AbstractController {
     next: NextFunction
   ) => {
     try {
-      const data = await this.employeeService.deleteEmployee(request.params);
+      const data = await this.employeeService.deleteEmployee(request.params.id);
       response.send(
         this.fmt.formatResponse(data, Date.now() - request.startTime, "OK")
       );

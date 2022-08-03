@@ -9,6 +9,9 @@ import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsername
 import UserNotAuthorizedException from "../exception/UserNotAuthorizedException";
 import jsonwebtoken from "jsonwebtoken";
 import { Address } from "../entities/Address";
+import { CreateEmployeeDto } from "../dto/CreateEmployee";
+import { UuidDto } from "../dto/Uuid";
+import { UpdateEmployeeDto } from "../dto/UpdateEmployee";
 
 export class EmployeeService{
     constructor(private employeeRepository: EmployeeRepository) {
@@ -53,8 +56,8 @@ export class EmployeeService{
         return data;
     }
 
-    async getEmployeeById(employeeIdDetails: any) {
-        const employeeId = employeeIdDetails.id;
+    async getEmployeeById(employeeIdDetails: string) {
+        const employeeId = employeeIdDetails;
         const data = await this.employeeRepository.getEmployeeById(employeeId);
         if(!data) {
             throw new EntityNotFoundException(ErrorCodes.EMPLOYEE_NOT_FOUND)
@@ -62,7 +65,7 @@ export class EmployeeService{
         return data;
     }
     
-    public async createEmployee(employeeDetails: any) {
+    public async createEmployee(employeeDetails: CreateEmployeeDto) {
         try {
             const newAddress = plainToClass(Address, {
                 line1: employeeDetails.address.line1,
@@ -87,19 +90,19 @@ export class EmployeeService{
         }
     }
 
-    public async deleteEmployee(employeeDetails: any) {
+    public async deleteEmployee(employeeId: string) {
         try {
-            const data = await this.employeeRepository.softDeleteEmployee(employeeDetails.id);
+            const data = await this.employeeRepository.softDeleteEmployee(employeeId);
             return data;
         } catch (err) {
             throw new HttpException(400, "Failed to delete employee");
         }
     }
 
-    public async updateEmployee(employeeDetails: any, employeeId: any) {
+    public async updateEmployee(employeeDetails: UpdateEmployeeDto, employeeId: string) {
         try {
             // const existingEmployee = this.employeeRepository.getEmployeeById(employeeId);
-            const updatedEmpAddress = {
+            const updatedEmpAddress = plainToClass(Address, {
                 id: employeeDetails.addressId,
                 line1: employeeDetails.address.line1,
                 line2: employeeDetails.address.line2,
@@ -107,7 +110,7 @@ export class EmployeeService{
                 state: employeeDetails.address.state,
                 country: employeeDetails.address.country,
                 pin: employeeDetails.address.pin,
-            }
+            })
             const updatedEmployee = plainToClass(Employee, {
                 id: employeeId,
                 name: employeeDetails.name,
