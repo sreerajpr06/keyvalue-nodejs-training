@@ -18,10 +18,4 @@ import { Employee } from "./Employee";
         public country: string;
         @Column({ nullable: false })
         public pin: string;
-
-        @ManyToOne(() => Employee, { cascade: true })
-        @JoinColumn()
-        public employee: Employee;
-            @Column({ nullable: false })
-            public employeeId: string;
-}
+    }   

@@ -1,4 +1,7 @@
-import { IsNumber, IsString, IsUUID } from "class-validator";
+import { Type } from "class-transformer";
+import { IsNumber, IsString, IsUUID, ValidateNested } from "class-validator";
+import { Address } from "../entities/Address";
+import { CreateAddressDto } from "./CreateAddress";
 
 export class CreateEmployeeDto {
     @IsString()
@@ -15,4 +18,8 @@ export class CreateEmployeeDto {
 
     @IsUUID()
     public departmentId: string;
+
+    @ValidateNested({ each: true })
+        @Type(() => CreateAddressDto)
+        public address: Address
 }

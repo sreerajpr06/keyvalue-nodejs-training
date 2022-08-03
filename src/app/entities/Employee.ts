@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { AbstractEntity } from "./AbstractEntity";
 import { Address } from "./Address";
 import { Department } from "./Department";
@@ -24,13 +24,19 @@ import { Department } from "./Department";
         @Column({ nullable: true })
         public role: string;
 
-        @ManyToOne(() => Department, { cascade: true })
-        @JoinColumn()
-        public department: Department;
+        @ManyToOne(() => Department, {
+             cascade: true 
+        })
+            @JoinColumn()
+            public department: Department;
             @Column({ nullable: false })
             public departmentId: string;
 
-        @OneToMany(() => Address, (address) => address.employee)
-        @JoinColumn()
-            public address: Address[];
+        @OneToOne(() => Address, {
+            cascade: true
+        })
+            @JoinColumn()
+            public address: Address;
+            @Column({ nullable: true })
+            public addressId: string;
 }

@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsernameOrPasswordException";
 import UserNotAuthorizedException from "../exception/UserNotAuthorizedException";
 import jsonwebtoken from "jsonwebtoken";
+import { Address } from "../entities/Address";
 
 export class EmployeeService{
     constructor(private employeeRepository: EmployeeRepository) {
@@ -63,15 +64,21 @@ export class EmployeeService{
     
     public async createEmployee(employeeDetails: any) {
         try {
+            const newAddress = plainToClass(Address, {
+                line1: employeeDetails.address.line1,
+                line2: employeeDetails.address.line2,
+                city: employeeDetails.address.city,
+                state: employeeDetails.address.state,
+                country: employeeDetails.address.country,
+                pin: employeeDetails.address.pin
+            })
             const newEmployee = plainToClass(Employee, {
                 name: employeeDetails.name,
-                // username: employeeDetails.username,
-                // age: employeeDetails.age,
                 role: employeeDetails.role,
                 password: employeeDetails.password ? await bcrypt.hash(employeeDetails.password, 10) : '',
                 departmentId: employeeDetails.departmentId,
                 experience: employeeDetails.experience,
-                // isActive: true,
+                address: newAddress
             });
             const save = await this.employeeRepository.saveEmployeeDetails(newEmployee);
             return save;
